@@ -970,7 +970,8 @@ void main() {
   doc3.render(); // Rendering Markdown: # This is a heading
   doc4.render(); // Rendering Word: This is a Word document content.
   doc5.render(); // Rendering plain text: This will be rendered as plain text.
-}</pre>
+}
+            </pre>
         </div>
     </div>
 
@@ -1005,16 +1006,10 @@ void main() {
     <!-- Latihan & Challenge -->
     <div class="slide-card">
         <div class="slide-header">
-            <h2>🏋️ Latihan & Challenge</h2>
-            <div class="slide-number">Slide 17 (Tugas)</div>
+            <h2>🏋️ Challenge</h2>
+            <div class="slide-number"></div>
         </div>
         <div class="slide-content">
-            <h4>Latihan:</h4>
-            <ol>
-                <li>Buat <strong>ConnectionFactory</strong> dengan pooling koneksi database.</li>
-                <li>Buat <strong>NotificationFactory</strong> yang memilih subclass berdasarkan platform (iOS, Android, Web).</li>
-                <li>Buat <strong>ShapeFactory</strong> dengan cache untuk shapes yang sama (misalnya lingkaran dengan radius sama).</li>
-            </ol>
             <h4>🚀 Challenge: AnimalFactory</h4>
             <p>Buat <strong>AnimalFactory</strong> dengan:</p>
             <ul>
@@ -1023,12 +1018,270 @@ void main() {
                 <li>Validation untuk parameter (umur harus positif, nama tidak boleh kosong).</li>
                 <li>Subclass selection berdasarkan input (mengembalikan Dog, Cat, atau Bird).</li>
             </ul>
-            <pre>// Contoh kerangka:
+            <pre>
+               
+ // Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A   
+// ==================== ABSTRACT CLASS ====================
 abstract class Animal {
-  void speak();
-  factory Animal(String type, String name, int age) {
-    // validasi + caching + subclass selection
+  String getName();
+  String getSound();
+  String getHabitat();
+  double getSpeed();
+  String getDiet();
+  
+  void displayInfo() {
+    print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    print('🐾 Animal: ${getName()}');
+    print('🔊 Sound: ${getSound()}');
+    print('🏠 Habitat: ${getHabitat()}');
+    print('⚡ Speed: ${getSpeed().toStringAsFixed(1)} km/h');
+    print('🍽️  Diet: ${getDiet()}');
+    print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   }
+}
+
+// MAMMALS
+class Lion extends Animal {
+  @override String getName() => 'Lion';
+  @override String getSound() => 'Roar! 🦁';
+  @override String getHabitat() => 'Savanna';
+  @override double getSpeed() => 80.5;
+  @override String getDiet() => 'Carnivore';
+}
+
+class Elephant extends Animal {
+  @override String getName() => 'Elephant';
+  @override String getSound() => 'Trumpet! 🐘';
+  @override String getHabitat() => 'Grasslands & Forests';
+  @override double getSpeed() => 40.0;
+  @override String getDiet() => 'Herbivore';
+}
+
+class Tiger extends Animal {
+  @override String getName() => 'Tiger';
+  @override String getSound() => 'Growl! 🐯';
+  @override String getHabitat() => 'Jungle';
+  @override double getSpeed() => 65.0;
+  @override String getDiet() => 'Carnivore';
+}
+
+class Giraffe extends Animal {
+  @override String getName() => 'Giraffe';
+  @override String getSound() => 'Bleat! 🦒';
+  @override String getHabitat() => 'Savanna';
+  @override double getSpeed() => 60.0;
+  @override String getDiet() => 'Herbivore';
+}
+
+// BIRDS
+class Eagle extends Animal {
+  @override String getName() => 'Eagle';
+  @override String getSound() => 'Screech! 🦅';
+  @override String getHabitat() => 'Mountains & Cliffs';
+  @override double getSpeed() => 160.0;
+  @override String getDiet() => 'Carnivore';
+}
+
+class Penguin extends Animal {
+  @override String getName() => 'Penguin';
+  @override String getSound() => 'Honk! 🐧';
+  @override String getHabitat() => 'Antarctica';
+  @override double getSpeed() => 8.0;
+  @override String getDiet() => 'Carnivore (Fish)';
+}
+
+// REPTILES
+class Snake extends Animal {
+  @override String getName() => 'Snake';
+  @override String getSound() => 'Hiss! 🐍';
+  @override String getHabitat() => 'Various (Desert, Forest, Grassland)';
+  @override double getSpeed() => 20.0;
+  @override String getDiet() => 'Carnivore';
+}
+
+class Crocodile extends Animal {
+  @override String getName() => 'Crocodile';
+  @override String getSound() => 'Growl! 🐊';
+  @override String getHabitat() => 'Rivers & Lakes';
+  @override double getSpeed() => 35.0;
+  @override String getDiet() => 'Carnivore';
+}
+
+// AQUATIC
+class Dolphin extends Animal {
+  @override String getName() => 'Dolphin';
+  @override String getSound() => 'Click & Whistle! 🐬';
+  @override String getHabitat() => 'Oceans';
+  @override double getSpeed() => 60.0;
+  @override String getDiet() => 'Carnivore';
+}
+
+class Shark extends Animal {
+  @override String getName() => 'Shark';
+  @override String getSound() => 'Silent Hunter! 🦈';
+  @override String getHabitat() => 'Oceans';
+  @override double getSpeed() => 56.0;
+  @override String getDiet() => 'Carnivore';
+}
+
+// ==================== ANIMAL FACTORY ====================
+class AnimalFactory {
+  static final AnimalFactory _instance = AnimalFactory._internal();
+  final Map<String, Animal> _animalCache = {};
+  final List<String> _validAnimalTypes = [
+    'lion', 'elephant', 'tiger', 'giraffe', 
+    'eagle', 'penguin', 'snake', 'crocodile', 
+    'dolphin', 'shark'
+  ];
+  
+  int _cacheHits = 0;
+  int _cacheMisses = 0;
+  int _totalAnimalsCreated = 0;
+  
+  factory AnimalFactory() => _instance;
+  AnimalFactory._internal();
+  
+  String _validateAnimalType(String type) {
+    final normalizedType = type.toLowerCase().trim();
+    
+    if (normalizedType.isEmpty) {
+      throw ArgumentError('❌ Animal type cannot be empty!');
+    }
+    
+    if (!_validAnimalTypes.contains(normalizedType)) {
+      throw ArgumentError(
+        '❌ Invalid animal type: "$type"\n'
+        '   Supported types: ${_validAnimalTypes.join(", ")}'
+      );
+    }
+    
+    return normalizedType;
+  }
+  
+  Animal createAnimal(String type) {
+    print('\n🔍 Creating animal: "$type"');
+    
+    final validatedType = _validateAnimalType(type);
+    
+    // Check cache
+    if (_animalCache.containsKey(validatedType)) {
+      _cacheHits++;
+      print('✅ CACHE HIT! Returning cached ${validatedType.toUpperCase()}');
+      print('📊 Cache stats - Hits: $_cacheHits, Misses: $_cacheMisses');
+      return _animalCache[validatedType]!;
+    }
+    
+    // Create new animal
+    _cacheMisses++;
+    _totalAnimalsCreated++;
+    Animal animal;
+    
+    switch (validatedType) {
+      case 'lion': animal = Lion(); break;
+      case 'elephant': animal = Elephant(); break;
+      case 'tiger': animal = Tiger(); break;
+      case 'giraffe': animal = Giraffe(); break;
+      case 'eagle': animal = Eagle(); break;
+      case 'penguin': animal = Penguin(); break;
+      case 'snake': animal = Snake(); break;
+      case 'crocodile': animal = Crocodile(); break;
+      case 'dolphin': animal = Dolphin(); break;
+      case 'shark': animal = Shark(); break;
+      default: throw ArgumentError('❌ Unsupported animal type: $validatedType');
+    }
+    
+    _animalCache[validatedType] = animal;
+    print('🆕 CACHE MISS! Created new ${validatedType.toUpperCase()}');
+    print('📊 Cache stats - Hits: $_cacheHits, Misses: $_cacheMisses');
+    
+    return animal;
+  }
+  
+  void printCacheStats() {
+    print('\n╔════════════════════════════════════════════╗');
+    print('║        ANIMAL FACTORY STATISTICS          ║');
+    print('╠════════════════════════════════════════════╣');
+    print('║ Total animals created: ${_totalAnimalsCreated.toString().padLeft(12)} ║');
+    print('║ Cache size:            ${_animalCache.length.toString().padLeft(12)} ║');
+    print('║ Cache hits:            ${_cacheHits.toString().padLeft(12)} ║');
+    print('║ Cache misses:          ${_cacheMisses.toString().padLeft(12)} ║');
+    print('║ Hit ratio:             ${(_cacheHits / (_cacheHits + _cacheMisses) * 100).toStringAsFixed(1).padLeft(12)}% ║');
+    print('╚════════════════════════════════════════════╝\n');
+  }
+  
+  void clearCache() {
+    _animalCache.clear();
+    _cacheHits = 0;
+    _cacheMisses = 0;
+    print('\n🗑️  Animal cache cleared!');
+  }
+  
+  List<String> getSupportedAnimals() => List.unmodifiable(_validAnimalTypes);
+}
+
+// ==================== MAIN FUNCTION ====================
+void main() {
+  print('\n╔══════════════════════════════════════════════════════════════╗');
+  print('║              ANIMAL FACTORY DEMONSTRATION                    ║');
+  print('║     Factory Method + Caching + Validation + Subclass         ║');
+  print('╚══════════════════════════════════════════════════════════════╝');
+  
+  final animalFactory = AnimalFactory();
+  
+  // Test 1: Basic creation
+  print('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  print('🦁 TEST 1: BASIC ANIMAL CREATION');
+  print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  
+  final lion1 = animalFactory.createAnimal('lion');
+  lion1.displayInfo();
+  
+  final eagle1 = animalFactory.createAnimal('eagle');
+  eagle1.displayInfo();
+  
+  // Test 2: Cache mechanism
+  print('\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  print('💾 TEST 2: CACHE MECHANISM');
+  print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  
+  print('\nCreating LION again (should use cache):');
+  final lion2 = animalFactory.createAnimal('lion');
+  print('\n✓ Same instance? ${identical(lion1, lion2)}');
+  
+  // Test 3: Validation
+  print('\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  print('🔍 TEST 3: INPUT VALIDATION');
+  print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  
+  try {
+    animalFactory.createAnimal('dragon');
+  } catch (e) {
+    print('✓ Validation working: $e');
+  }
+  
+  // Test 4: Create all animals
+  print('\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  print('🎪 TEST 4: ALL SUPPORTED ANIMALS');
+  print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  
+  final supportedAnimals = animalFactory.getSupportedAnimals();
+  for (var type in supportedAnimals) {
+    final animal = animalFactory.createAnimal(type);
+    print('✓ ${animal.getName()} - ${animal.getSound()}');
+  }
+  
+  // Test 5: Statistics
+  print('\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  print('📊 TEST 5: FINAL STATISTICS');
+  print('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  
+  animalFactory.printCacheStats();
+  
+  print('\n╔══════════════════════════════════════════════════════════════╗');
+  print('║                  DEMONSTRATION COMPLETE                       ║');
+  print('╚══════════════════════════════════════════════════════════════╝\n');
 }
 </pre>
         </div>
