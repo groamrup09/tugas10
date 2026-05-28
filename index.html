@@ -810,7 +810,11 @@ void main() {
             <div class="slide-number">Slide 11 (perbandingan)</div>
         </div>
         <div class="slide-content">
-            <pre>class Example {
+            <pre>
+   // Nama: Azriel Miracle Yuandre
+   // Nim: 251410024
+  // Kelas: SI2A               
+  class Example {
   Example._() {} // private constructor
 
   // Konstruktor pabrik (Factory Constructor)
@@ -837,7 +841,11 @@ void main() {
             <div class="slide-number">Slide 12</div>
         </div>
         <div class="slide-content">
-            <pre>class Color {
+            <pre>
+    // Nama: Azriel Miracle Yuandre
+   // Nim: 251410024
+  // Kelas: SI2A              
+  class Color {
   final int red;
   final int green;
   final int blue;
@@ -880,6 +888,95 @@ void main() {
         </div>
     </div>
 
+
+    <div class="slide-card">
+        <div class="slide-header">
+            <h2>Document Factory</h2>
+            <div class="slide-number">Slide 13</div>
+        </div>
+        <div class="slide-content">
+            <pre>
+    // Nama: Azriel Miracle Yuandre
+   // Nim: 251410024
+  // Kelas: SI2A                
+  abstract class Document {
+  void render();
+  factory Document(String type, String content) {
+    switch (type.toLowerCase()) {
+      case 'pdf':
+        return PDFDocument(content);
+      case 'word':
+        return WordDocument(content);
+      case 'html':
+        return HTMLDocument(content);
+      case 'markdown':
+        return MarkdownDocument(content);
+      default:
+        return PlainTextDocument(content);
+    }
+  }
+}
+class PDFDocument implements Document {
+  final String content;
+  PDFDocument(this.content);
+  @override
+  void render() {
+    print('Rendering PDF: $content');
+  }
+}
+class WordDocument implements Document {
+  final String content;
+  WordDocument(this.content);
+  @override
+  void render() {
+    print('Rendering Word: $content');
+  }
+}
+class HTMLDocument implements Document {
+  final String content;
+  HTMLDocument(this.content);
+  @override
+  void render() {
+    print('Rendering HTML: $content');
+  }
+}
+class MarkdownDocument implements Document {
+  final String content;
+  MarkdownDocument(this.content);
+  @override
+  void render() {
+    print('Rendering Markdown: $content');
+  }
+}
+class PlainTextDocument implements Document {
+  final String content;
+  PlainTextDocument(this.content);
+  @override
+  void render() {
+    print('Rendering plain text: $content');
+  }
+}
+void main() {
+  // Contoh untuk pdf dan html
+  var doc1 = Document('pdf', 'Hello PDF');
+  var doc2 = Document('html', '<h1>Hello</h1>');
+  
+  doc1.render(); // Rendering PDF: Hello PDF
+  doc2.render(); // Rendering HTML: <h1>Hello</h1>
+  // Contoh  untuk markdown, word, dan default (plain text)
+  var doc3 = Document('markdown', '# This is a heading');
+  var doc4 = Document('word', 'This is a Word document content.');
+  var doc5 = Document('unknown type', 'This will be rendered as plain text.');
+  doc3.render(); // Rendering Markdown: # This is a heading
+  doc4.render(); // Rendering Word: This is a Word document content.
+  doc5.render(); // Rendering plain text: This will be rendered as plain text.
+}</pre>
+        </div>
+    </div>
+
+
+
+     
     <!-- Best Practices & Ringkasan -->
     <div class="slide-card">
         <div class="slide-header">
