@@ -165,6 +165,40 @@
                 font-size: 1.3rem;
             }
         }
+
+         /* Tabel styling */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #e2e8f0;
+            padding: 1rem 1.2rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .comparison-table td:first-child,
+        .comparison-table th:first-child {
+            font-weight: 600;
+            background-color: #f8fafc;
+        }
+
+        .comparison-table tr:hover td {
+            background-color: #fef9c3;
+        }
     </style>
 </head>
 <body>
