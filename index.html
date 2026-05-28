@@ -226,22 +226,44 @@
             <div class="slide-number">Slide 3</div>
         </div>
         <div class="slide-content">
-            <pre>class MyClass {
-  // Generative constructor (biasa)
-  MyClass();
+            <pre>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A                
+class Example {
+  // Private constructor agar tidak bisa dibuat dari luar
+  Example._();
 
-  // Factory constructor
-  factory MyClass.create() {
-    // Bisa return instance yang sudah ada
-    // Atau instance dari subclass
-    // Atau instance baru
-    return MyClass();
-  }
+  // Factory constructor yang memanggil constructor private
+  factory Example.create() => Example._();
+
+  // Static method yang juga memanggil constructor private
+  static Example createStatic() => Example._();
 }
 
-void main(){
-  var obj1 = MyClass();      // Generative
-  var obj2 = MyClass.create(); // Factory
+void main() {
+  // Penggunaan factory constructor
+  var e1 = Example.create();        // Factory constructor
+  
+  // Penggunaan static method
+  var e2 = Example.createStatic();  // Static method
+  
+  // var e3 = Example(); // Error: constructor private (tidak bisa diakses)
+  
+  print('e1 dibuat melalui factory constructor: $e1');
+  print('e2 dibuat melalui static method: $e2');
+  print('Apakah e1 dan e2 instance yang sama? ${identical(e1, e2)}'); // false
+  
+  // Demonstrasi bahwa setiap pemanggilan membuat instance baru
+  var e3 = Example.create();
+  var e4 = Example.createStatic();
+  
+  print('e1 dan e3 berbeda? ${!identical(e1, e3)}'); // true - instance berbeda
+  print('e2 dan e4 berbeda? ${!identical(e2, e4)}'); // true - instance berbeda
+  print('e3 dan e4 berbeda? ${!identical(e3, e4)}'); // true - instance berbeda
+  
+  // Atau bisa juga pakai e4 untuk sesuatu yang bermakna
+  print('Total instances yang dibuat: 4 (e1, e2, e3, e4)');
 }</pre>
         </div>
     </div>
@@ -254,31 +276,34 @@ void main(){
         </div>
         <div class="slide-content">
             <p>Singleton: Hanya <strong>satu instance</strong> sepanjang aplikasi.</p>
-            <pre>class DatabaseConnection {
-  // Private constructor
-  DatabaseConnection._internal() {
-    print('Creating database connection...');
-  }
-  // Static instance
-  static final DatabaseConnection _instance = DatabaseConnection._internal();
-  
-  // Factory constructor
-  factory DatabaseConnection() {
-    return _instance;
-  }
-  
-  void connect() {
-    print('Connected to database');
-  }
+            <pre>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A                  
+class DatabaseConnection {
+// Private constructor
+DatabaseConnection._internal() {
+print('Creating database connection...');
 }
-
+// Static instance
+static final DatabaseConnection _instance = DatabaseConnection._internal();
+// Factory constructor
+factory DatabaseConnection() {
+return _instance;
+}
+void connect() {
+print('Connected to database');
+}
+}
 void main() {
-  var db1 = DatabaseConnection();
-  var db2 = DatabaseConnection();
-  print(identical(db1, db2)); // true - instance yang sama
-  db1.connect();
-  db2.connect();
-}</pre>
+// Penggunaan
+var db1 = DatabaseConnection();
+var db2 = DatabaseConnection();
+print(identical(db1, db2)); // true - instance yang sama
+db1.connect();
+db2.connect();
+}
+            </pre>
         </div>
     </div>
 
@@ -289,41 +314,62 @@ void main() {
             <div class="slide-number">Slide 5</div>
         </div>
         <div class="slide-content">
-            <pre>class ConnectionPool {
+            <pre>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A                 
+  class ConnectionPool {
   final String host;
   final int port;
   // Cache berdasarkan parameter
-  static final Map&lt;String, ConnectionPool&gt; _cache = {};
-
+  static final Map<String, ConnectionPool> _cache = {};
+  
   // Private constructor
   ConnectionPool._(this.host, this.port);
-
+  
   // Factory dengan caching
   factory ConnectionPool(String host, int port) {
     var key = '$host:$port';
+    // Return dari cache jika ada
     if (_cache.containsKey(key)) {
-      print('Returning cache connection for $key');
+      print('Returning cached connection for $key');
       return _cache[key]!;
     }
+    // Buat baru dan cache
     print('Creating new connection for $key');
     var connection = ConnectionPool._(host, port);
     _cache[key] = connection;
     return connection;
   }
-
+  
   void query(String sql) {
     print('Executing: "$sql" on $host:$port');
   }
 }
 
 void main() {
+  print('--- Creating conn1 (localhost:5432) ---');
   var conn1 = ConnectionPool('localhost', 5432);
-  var conn2 = ConnectionPool('localhost', 5432); // dari cache
-  var conn3 = ConnectionPool('db.example.com', 3306);
   conn1.query('SELECT * FROM users;');
+  print('');
+  
+  print('--- Creating conn2 (localhost:5432 - should be cached) ---');
+  var conn2 = ConnectionPool('localhost', 5432); // Dari cache
   conn2.query('INSERT INTO products (name) VALUES ("Laptop");');
-  print(identical(conn1, conn2)); // true
-}</pre>
+  print('');
+  
+  print('--- Creating conn3 (db.example.com:3306 - new connection) ---');
+  var conn3 = ConnectionPool('db.example.com', 3306); // Baru
+  conn3.query('UPDATE orders SET status="shipped" WHERE id=101;');
+  print('');
+  
+  // Demonstrate that conn1 and conn2 are the same instance
+  print('Are conn1 and conn2 the same instance? ${identical(conn1, conn2)}'); // true
+  
+  // Demonstrate that conn1 and conn3 are different instances
+  print('Are conn1 and conn3 the same instance? ${identical(conn1, conn3)}'); // false
+}
+            </pre>
             <div class="note">✨ <strong>Output demonstrasi:</strong> koneksi yang sama untuk host:port yang sama, mengurangi overhead.</div>
         </div>
     </div>
@@ -335,7 +381,11 @@ void main() {
             <div class="slide-number">Slide 6</div>
         </div>
         <div class="slide-content">
-            <pre>abstract class Shape {
+            <pre>
+   // Nama: Azriel Miracle Yuandre
+   // Nim: 251410024
+  // Kelas: SI2A                 
+  abstract class Shape {
   void draw();
   
   factory Shape(String type) {
@@ -387,34 +437,215 @@ void main() {
         </div>
         <div class="slide-content">
             <p>Materi praktik: membuat factory untuk menyediakan konfigurasi aplikasi dengan caching &amp; pembacaan dari environment (ilustrasi).</p>
-            <pre>class AppConfig {
+            <pre>
+   // Nama: Azriel Miracle Yuandre
+   // Nim: 251410024
+  // Kelas: SI2A                 
+  class AppConfig {
+  final String environment;
   final String apiUrl;
-  final int timeout;
-
-  static final Map&lt;String, AppConfig&gt; _cache = {};
-
-  AppConfig._(this.apiUrl, this.timeout);
-
+  final bool debugMode;
+  // Private constructors untuk setiap environment
+  AppConfig._development()
+    : environment = 'development',
+      apiUrl = 'http://localhost:3000',
+      debugMode = true;
+  AppConfig._production()
+    : environment = 'production',
+      apiUrl = 'https://api.example.com',
+      debugMode = false;
+  AppConfig._staging()
+    : environment = 'staging',
+      apiUrl = 'https://staging.example.com',
+      debugMode = true;
+  // Factory constructor
   factory AppConfig.fromEnvironment(String env) {
-    if (_cache.containsKey(env)) return _cache[env]!;
-    // simulasi load config
-    if (env == 'production') {
-      var config = AppConfig._('https://api.example.com', 30);
-      _cache[env] = config;
-      return config;
-    } else {
-      var config = AppConfig._('https://dev.api.example.com', 60);
-      _cache[env] = config;
-      return config;
+    switch (env.toLowerCase()) {
+      case 'dev':
+        return AppConfig._development();
+      case 'development':
+        return AppConfig._development();
+      case 'prod':
+        return AppConfig._production();
+      case 'production':
+        return AppConfig._production();
+      case 'stage':
+        return AppConfig._staging();
+      case 'staging':
+        return AppConfig._staging();
+      default:
+        throw ArgumentError('Unknown environment: $env');
     }
   }
-
-  @override
-  String toString() => 'AppConfig(apiUrl: $apiUrl, timeout: $timeout)';
-}</pre>
+  void printConfig() {
+    print('Environment: $environment');
+    print('API URL: $apiUrl');
+    print('Debug: $debugMode');
+  }
+}
+void main() {
+  // Penggunaan
+  var devConfig = AppConfig.fromEnvironment('dev');
+  var prodConfig = AppConfig.fromEnvironment('prod');
+  var stageConfig = AppConfig.fromEnvironment('stage');
+  devConfig.printConfig();
+  prodConfig.printConfig();
+  stageConfig.printConfig();
+}
+            </pre>
         </div>
     </div>
 
+
+    <div class="slide-card">
+        <div class="slide-header">
+            <h2>⚙️   Factory dengan Named Constructors</h2>
+            <div class="slide-number">Slide 8</div>
+        </div>
+        <div class="slide-content">
+            
+            <pre>
+   // Nama: Azriel Miracle Yuandre
+   // Nim: 251410024
+  // Kelas: SI2A                 
+ class User {
+  final String id;
+  final String name;
+  final String email;
+  
+  User._({required this.id, required this.name, required this.email});
+  
+  // Factory dari JSON
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User._(
+      id: json['id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      email: json['email']?.toString() ?? '',
+    );
+  }
+  
+  // Factory untuk guest user
+  factory User.guest() {
+    return User._(
+      id: 'guest_${DateTime.now().millisecondsSinceEpoch}',
+      name: 'Guest',
+      email: 'guest@example.com',
+    );
+  }
+  
+  // Factory dengan validation
+  factory User.create(String name, String email) {
+    if (name.isEmpty) {
+      throw ArgumentError('Name cannot be empty');
+    }
+    if (!email.contains('@')) {
+      throw ArgumentError('Invalid email');
+    }
+    return User._(
+      id: 'user_${DateTime.now().millisecondsSinceEpoch}',
+      name: name,
+      email: email,
+    );
+  }
+  
+  @override
+  String toString() {
+    return 'User(id: $id, name: $name, email: $email)';
+  }
+}
+
+void main() {
+  // Penggunaan
+  var jsonUser = User.fromJson({
+    'id': '123',
+    'name': 'Alice',
+    'email': 'alice@example.com'
+  });
+  
+  var guest = User.guest();
+  
+  var newUser = User.create('Bob', 'bob@example.com');
+  
+  // Mencetak variabel-variabel (sekarang di dalam main)
+  print('JSON User: $jsonUser');
+  print('Guest User: $guest');
+  print('New User: $newUser');
+  
+  // Contoh tambahan: menangani error
+  print('\n--- Testing Error Handling ---');
+  try {
+    var invalidUser = User.create('', 'invalid');
+  } catch (e) {
+    print('Error caught: $e');
+  }
+  
+  try {
+    var invalidEmail = User.create('Charlie', 'not-an-email');
+  } catch (e) {
+    print('Error caught: $e');
+  }
+}
+            </pre>
+        </div>
+    </div>
+
+ 
+    <div class="slide-card">
+        <div class="slide-header">
+            <h2>⚙️   Factory dengan Generic</h2>
+            <div class="slide-number">Slide 9</div>
+        </div>
+        <div class="slide-content">
+            <p>Materi praktik: membuat factory untuk menyediakan konfigurasi aplikasi dengan caching &amp; pembacaan dari environment (ilustrasi).</p>
+            <pre>
+   // Nama: Azriel Miracle Yuandre
+   // Nim: 251410024
+  // Kelas: SI2A                 
+abstract class Response<T> {
+  final T? data;
+  final String? error;
+  
+  Response({this.data, this.error});
+  
+  // Factory untuk success
+  factory Response.success(T data) = SuccessResponse<T>;
+  
+  // Factory untuk error
+  factory Response.error(String error) = ErrorResponse<T>;
+}
+
+class SuccessResponse<T> extends Response<T> {
+  SuccessResponse(T data) : super(data: data);
+}
+
+class ErrorResponse<T> extends Response<T> {
+  ErrorResponse(String error) : super(error: error);
+}
+
+// Add this main function as the entry point
+void main() {
+  // Example usage
+  Response<int> successResponse = Response.success(100);
+  Response<String> errorResponse = Response.error("Something went wrong");
+  
+  print('Success response data: ${successResponse.data}');
+  print('Error response error: ${errorResponse.error}');
+  
+  // You can also check the type
+  if (successResponse is SuccessResponse<int>) {
+    print('This is a SuccessResponse');
+  }
+  
+  if (errorResponse is ErrorResponse<String>) {
+    print('This is an ErrorResponse');
+  }
+}
+            </pre>
+        </div>
+    </div>
+
+
+    
     <!-- Praktik 2 - Factory untuk Payment Methods -->
     <div class="slide-card">
         <div class="slide-header">
@@ -422,7 +653,11 @@ void main() {
             <div class="slide-number">Slide 10 (materi praktik)</div>
         </div>
         <div class="slide-content">
-            <pre>abstract class PaymentMethod {
+            <pre>
+   // Nama: Azriel Miracle Yuandre
+   // Nim: 251410024
+  // Kelas: SI2A                 
+  abstract class PaymentMethod {
   void pay(double amount);
   
   factory PaymentMethod(String type) {
@@ -442,25 +677,98 @@ void main() {
 }
 
 class CreditCardPayment implements PaymentMethod {
-  @override void pay(double amount) => print('Paying \$$amount with Credit Card');
-}
-class PayPalPayment implements PaymentMethod {
-  @override void pay(double amount) => print('Paying \$$amount with PayPal');
-}
-class BankTransferPayment implements PaymentMethod {
-  @override void pay(double amount) => print('Paying \$$amount with Bank Transfer');
-}
-class EWalletPayment implements PaymentMethod {
-  @override void pay(double amount) => print('Paying \$$amount with E-Wallet');
+  @override
+  void pay(double amount) {
+    print('Paying \$$amount with Credit Card');
+  }
 }
 
+class PayPalPayment implements PaymentMethod {
+  @override
+  void pay(double amount) {
+    print('Paying \$$amount with PayPal');
+  }
+}
+
+class BankTransferPayment implements PaymentMethod {
+  @override
+  void pay(double amount) {
+    print('Paying \$$amount with Bank Transfer');
+  }
+}
+
+class EWalletPayment implements PaymentMethod {
+  @override
+  void pay(double amount) {
+    print('Paying \$$amount with E-Wallet');
+  }
+}
+
+// Add the main function here
 void main() {
-  var method = PaymentMethod('paypal');
-  method.pay(99.99);
-}</pre>
+  // Example usage
+  PaymentMethod creditCard = PaymentMethod('creditcard');
+  creditCard.pay(100.50);
+  
+  PaymentMethod paypal = PaymentMethod('paypal');
+  paypal.pay(75.25);
+  
+  PaymentMethod bankTransfer = PaymentMethod('banktransfer');
+  bankTransfer.pay(500.00);
+  
+  PaymentMethod ewallet = PaymentMethod('ewallet');
+  ewallet.pay(200.75);
+  
+  // This will throw an error
+  try {
+    PaymentMethod invalid = PaymentMethod('bitcoin');
+    invalid.pay(10);
+  } catch (e) {
+    print('Error: $e');
+  }
+}
+            </pre>
         </div>
     </div>
 
+ <div class="slide-content">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Factory Constructor</th>
+                        <th>Static Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sintaks</td>
+                        <td><code class="inline-code">factory Class.name()</code></td>
+                        <td><code class="inline-code">static Class name()</code></td>
+                    </tr>
+                    <tr>
+                        <td>Return</td>
+                        <td>Harus instance Class/Subclass</td>
+                        <td>Bisa apa saja</td>
+                    </tr>
+                    <tr>
+                        <td>Usage</td>
+                        <td><code class="inline-code">Class obj = Class.create()</code></td>
+                        <td><code class="inline-code">Class obj = Class.create()</code></td>
+                    </tr>
+                    <tr>
+                        <td>Inheritance</td>
+                        <td>Diwarisi</td>
+                        <td>Tidak diwarisi</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">this</code></td>
+                        <td>Tidak ada akses</td>
+                        <td>Tidak ada akses</td>
+                    </tr>
+                </tbody>
+            </table>
+      
     <!-- Perbandingan: Factory Constructor vs Static Method (Slide tambahan) -->
     <div class="slide-card">
         <div class="slide-header">
