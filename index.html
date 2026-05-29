@@ -200,6 +200,24 @@
             background-color: #fef9c3;
         }
 
+         /* BUTTON */
+    .btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 18px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #1e40af;
+    }
+
          /* MODAL */
     .modal {
       display: none;
@@ -355,7 +373,7 @@ void main() {
   print('Total instances yang dibuat: 4 (e1, e2, e3, e4)');
 }</pre>
         </div>
-         <button class="btn" onclick="openModal('84b62f045af0a12893decc0c2753b1db')">
+         <button class="btn" onclick="openModal('e77c9b462c4e5f714d9265ec2be47732')">
         Lihat Kode
       </button>
     </div>
@@ -397,6 +415,9 @@ db2.connect();
 }
             </pre>
         </div>
+          <button class="btn" onclick="openModal('a388b3f23b3233ec6549937ca47e7a7a')">
+        Lihat Kode
+      </button>
     </div>
 
     <!-- Kasus 2 – Caching / Object Pool (ConnectionPool) -->
@@ -464,6 +485,9 @@ void main() {
             </pre>
             <div class="note">✨ <strong>Output demonstrasi:</strong> koneksi yang sama untuk host:port yang sama, mengurangi overhead.</div>
         </div>
+         <button class="btn" onclick="openModal('f6e5f743390a38895524f0b48c7f3784')">
+        Lihat Kode
+      </button>
     </div>
 
     <!-- Kasus 3 – Mengembalikan Subclass (Shape) -->
@@ -519,6 +543,9 @@ void main() {
   // Shape('pentagon'); // error
 }</pre>
         </div>
+         <button class="btn" onclick="openModal('bb8b68f388c24fe153d70d45d3415f48')">
+        Lihat Kode
+      </button>
     </div>
 
     <!-- Praktik 1 - Factory untuk Configuration (Slide 7) -->
@@ -586,6 +613,9 @@ void main() {
 }
             </pre>
         </div>
+         <button class="btn" onclick="openModal('b7f253e0d6b0a505667b06bd425f8502')">
+        Lihat Kode
+      </button>
     </div>
 
 
@@ -679,6 +709,9 @@ void main() {
 }
             </pre>
         </div>
+          <button class="btn" onclick="openModal('b66fb88c84f347fc004bb620855f6f08')">
+        Lihat Kode
+      </button>
     </div>
 
  
@@ -734,6 +767,9 @@ void main() {
 }
             </pre>
         </div>
+       <button class="btn" onclick="openModal('e9bf020f4062df6f5999c47644d4ac1c')">
+        Lihat Kode
+      </button>
     </div>
 
 
@@ -821,6 +857,9 @@ void main() {
 }
             </pre>
         </div>
+        <button class="btn" onclick="openModal('26552a0c5c59d2cf32955f9160a2dc99')">
+        Lihat Kode
+      </button>
     </div>
 
  <div class="slide-content">
@@ -888,8 +927,11 @@ void main() {
   print('e1: $e1, e2: $e2');
   print(identical(e1, e2) ? "sama" : "berbeda instance");
 }</pre>
-            <p>Keduanya dapat digunakan, namun factory constructor lebih ekspresif dalam konteks "constructor" dan bisa digunakan di <code>new</code> / konstanta.</p>
+         
         </div>
+          <button class="btn" onclick="openModal('be6f2855af315b5d60b3b6e6fea01f74')">
+        Lihat Kode
+      </button>
     </div>
 
     <!-- Factory untuk Immutable Objects dengan Cache (Color) -->
@@ -900,22 +942,22 @@ void main() {
         </div>
         <div class="slide-content">
             <pre>
-    // Nama: Azriel Miracle Yuandre
-   // Nim: 251410024
-  // Kelas: SI2A              
+// Nama: Azriel Miracle Yuandre
+ // Nim: 251410024
+ // Kelas: SI2A              
   class Color {
   final int red;
   final int green;
   final int blue;
 
-  static final Map&lt;String, Color&gt; _cache = {};
+  static final Map<String, Color> _cache = {};
 
   // Private constructor
   Color._(this.red, this.green, this.blue);
 
   // Factory dengan cache
   factory Color.rgb(int red, int green, int blue) {
-    if (red &lt; 0 || red &gt; 255 || green &lt; 0 || green &gt; 255 || blue &lt; 0 || blue &gt; 255) {
+    if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255) {
       throw ArgumentError('RGB values must be 0-255');
     }
     var key = '$red,$green,$blue';
@@ -944,6 +986,9 @@ void main() {
   print(red2);
 }</pre>
         </div>
+          <button class="btn" onclick="openModal('641378222a6580d6209cec5f48bd7125')">
+        Lihat Kode
+      </button>
     </div>
 
 
@@ -954,9 +999,9 @@ void main() {
         </div>
         <div class="slide-content">
             <pre>
-    // Nama: Azriel Miracle Yuandre
-   // Nim: 251410024
-  // Kelas: SI2A                
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A                
   abstract class Document {
   void render();
   factory Document(String type, String content) {
@@ -1031,6 +1076,9 @@ void main() {
 }
             </pre>
         </div>
+         <button class="btn" onclick="openModal('732e75c6a1e35b6bc9179b4419fd8294')">
+        Lihat Kode
+      </button>
     </div>
 
 
@@ -1343,6 +1391,9 @@ void main() {
 }
 </pre>
         </div>
+      <button class="btn" onclick="openModal('1b46e08c0455fd99562c20dd0bc28da3')">
+        Lihat Kode
+      </button>
     </div>
 
     <!-- Tambahan klarifikasi dari halaman yang rusak (raw text page 6 hingga 11 terintegrasi) semua informasi sudah diambil -->
