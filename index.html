@@ -723,9 +723,9 @@ void main() {
         <div class="slide-content">
             <p>Materi praktik: membuat factory untuk menyediakan konfigurasi aplikasi dengan caching &amp; pembacaan dari environment (ilustrasi).</p>
             <pre>
-   // Nama: Azriel Miracle Yuandre
-   // Nim: 251410024
-  // Kelas: SI2A                 
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A                 
 abstract class Response<T> {
   final T? data;
   final String? error;
@@ -747,23 +747,39 @@ class ErrorResponse<T> extends Response<T> {
   ErrorResponse(String error) : super(error: error);
 }
 
-// Add this main function as the entry point
 void main() {
-  // Example usage
-  Response<int> successResponse = Response.success(100);
-  Response<String> errorResponse = Response.error("Something went wrong");
+  // Dart bisa menginfer tipe data secara otomatis
+  final successResponse = Response.success(100);  // Otomatis Response<int>
+  final errorResponse = Response.error("Something went wrong");  // Otomatis Response<String>
   
   print('Success response data: ${successResponse.data}');
   print('Error response error: ${errorResponse.error}');
   
-  // You can also check the type
+  // Type checking
   if (successResponse is SuccessResponse<int>) {
-    print('This is a SuccessResponse');
+    print('This is a SuccessResponse with int data');
   }
   
   if (errorResponse is ErrorResponse<String>) {
-    print('This is an ErrorResponse');
+    print('This is an ErrorResponse with String error');
   }
+  
+  // Menampilkan tipe data
+  print('\nRuntime types:');
+  print('successResponse type: ${successResponse.runtimeType}');
+  print('errorResponse type: ${errorResponse.runtimeType}');
+  
+  // Contoh tambahan
+  print('\n--- Additional Examples ---');
+  
+  final stringSuccess = Response.success("Hello World");
+  print('String success: ${stringSuccess.data}');
+  
+  final boolSuccess = Response.success(true);
+  print('Bool success: ${boolSuccess.data}');
+  
+  final doubleError = Response.error("Invalid number format");
+  print('Double error: ${doubleError.error}');
 }
             </pre>
         </div>
@@ -774,7 +790,7 @@ void main() {
 
 
     
-    <!-- Praktik 2 - Factory untuk Payment Methods -->
+    
     <div class="slide-card">
         <div class="slide-header">
             <h2>💳 Praktik 2 – Factory untuk Payment Methods</h2>
@@ -1002,7 +1018,7 @@ void main() {
 // Nama: Azriel Miracle Yuandre
 // Nim: 251410024
 // Kelas: SI2A                
-  abstract class Document {
+ abstract class Document {
   void render();
   factory Document(String type, String content) {
     switch (type.toLowerCase()) {
