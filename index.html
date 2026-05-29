@@ -630,14 +630,13 @@ void main() {
    // Nama: Azriel Miracle Yuandre
    // Nim: 251410024
   // Kelas: SI2A                 
- class User {
+class User {
   final String id;
   final String name;
   final String email;
   
   User._({required this.id, required this.name, required this.email});
   
-  // Factory dari JSON
   factory User.fromJson(Map<String, dynamic> json) {
     return User._(
       id: json['id']?.toString() ?? '',
@@ -646,7 +645,6 @@ void main() {
     );
   }
   
-  // Factory untuk guest user
   factory User.guest() {
     return User._(
       id: 'guest_${DateTime.now().millisecondsSinceEpoch}',
@@ -655,14 +653,9 @@ void main() {
     );
   }
   
-  // Factory dengan validation
   factory User.create(String name, String email) {
-    if (name.isEmpty) {
-      throw ArgumentError('Name cannot be empty');
-    }
-    if (!email.contains('@')) {
-      throw ArgumentError('Invalid email');
-    }
+    if (name.isEmpty) throw ArgumentError('Name cannot be empty');
+    if (!email.contains('@')) throw ArgumentError('Invalid email');
     return User._(
       id: 'user_${DateTime.now().millisecondsSinceEpoch}',
       name: name,
@@ -671,41 +664,17 @@ void main() {
   }
   
   @override
-  String toString() {
-    return 'User(id: $id, name: $name, email: $email)';
-  }
+  String toString() => 'User(id: $id, name: $name, email: $email)';
 }
 
 void main() {
-  // Penggunaan
-  var jsonUser = User.fromJson({
-    'id': '123',
-    'name': 'Alice',
-    'email': 'alice@example.com'
-  });
+  final jsonUser = User.fromJson({'id': '123', 'name': 'Alice', 'email': 'alice@example.com'});
+  final guest = User.guest();
+  final newUser = User.create('Bob', 'bob@example.com');
   
-  var guest = User.guest();
-  
-  var newUser = User.create('Bob', 'bob@example.com');
-  
-  // Mencetak variabel-variabel (sekarang di dalam main)
   print('JSON User: $jsonUser');
   print('Guest User: $guest');
   print('New User: $newUser');
-  
-  // Contoh tambahan: menangani error
-  print('\n--- Testing Error Handling ---');
-  try {
-    var invalidUser = User.create('', 'invalid');
-  } catch (e) {
-    print('Error caught: $e');
-  }
-  
-  try {
-    var invalidEmail = User.create('Charlie', 'not-an-email');
-  } catch (e) {
-    print('Error caught: $e');
-  }
 }
             </pre>
         </div>
